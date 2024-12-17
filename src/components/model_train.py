@@ -14,6 +14,10 @@ from sklearn.tree import DecisionTreeRegressor
 from xgboost import XGBRegressor
 from src.exception import CustomException
 from src.logger import logging
+import numpy as np
+
+from src.components.data_transformation import DataTransformation
+from src.components.data_transformation import DataTransformationConfig
 
 
 
@@ -111,3 +115,28 @@ class ModelTrainer:
             
         except Exception as e:
             raise CustomException(e,sys)
+
+if __name__ == "__main__":
+    try:
+        train_data = os.path.join("artifact", "train.csv")
+        test_data = os.path.join("artifact", "test.csv")
+
+        datai =DataTransformation()
+        train_array_path,test_array_path =datai.initiate_data_transformation(train_data,test_data)   # Replace with the actual path
+
+        # Load training and testing arrays (assuming they're saved as .npy files)
+        train_array = np.load(train_array_path)
+        test_array = np.load(test_array_path)
+
+        # Instantiate the ModelTrainer
+        model_trainer = ModelTrainer()
+
+        # Call the initiate_model_trainer method
+        r2_square = model_trainer.initiate_model_trainer(train_array=train_array, test_array=test_array)
+
+        # Output the R2 score
+        print(f"R2 Score of the best model: {r2_square}")
+
+    except Exception as e:
+        # Log or print the exception if any
+        print(f"An error occurred: {e}")

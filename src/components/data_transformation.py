@@ -118,3 +118,29 @@ class DataTransformation:
             )
         except Exception as e:
             raise CustomException(e,sys)
+        
+if __name__ == "__main__":
+    try:
+        # Instantiate the DataTransformation class
+        obj = DataTransformation()
+
+        # Define paths for train and test datasets
+        train_path = os.path.join("artifact", "train.csv")
+        test_path = os.path.join("artifact", "test.csv")
+
+
+        # Execute the data transformation process
+        train_arr, test_arr, preprocessor_path = obj.initiate_data_transformation(
+            train_path=train_path,
+            test_path=test_path
+        )
+
+        # Log outputs for verification
+        print("Transformation Complete!")
+        print(f"Train array shape: {train_arr.shape}")
+        print(f"Test array shape: {test_arr.shape}")
+        print(f"Preprocessor object saved at: {preprocessor_path}")
+
+    except Exception as e:
+        # Log or print the exception if any
+        print(f"An error occurred: {e}")
